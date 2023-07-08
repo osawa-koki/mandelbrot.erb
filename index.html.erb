@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Mandelbrot.erb</title>
+</head>
+<body>
+  <div style="display: grid; grid-template-columns: repeat(<%= width %>, 1px); grid-template-rows: repeat(<%= height %>, 1px);">
+    <% (0...height).each do |y| %>
+      <% (0...width).each do |x| %>
+        <% zx = x_min + (x_max - x_min) * x / width %>
+        <% zy = y_min + (y_max - y_min) * y / height %>
+        <% z = 0.0 %>
+        <% iteration = 0 %>
+        <% while z.abs < 2 && iteration < max_iterations %>
+          <% z = z * z + Complex(zx, zy) %>
+          <% iteration += 1 %>
+        <% end %>
+        <% if iteration == max_iterations %>
+          <% color = [0, 0, 0] %>
+        <% else %>
+          <% color = [255 - iteration * incremental_step, iteration * incremental_step, iteration * incremental_step] %>
+        <% end %>
+        <div style="background-color: rgb(<%= color.join(',') %>);"></div>
+      <% end %>
+    <% end %>
+  </div>
+</body>
+</html>
